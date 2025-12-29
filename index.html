@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mary Jane 💝</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top,#3a1c2f,#120810);
+  color:#fff;
+  text-align:center;
+  overflow:hidden;
+}
+
+.screen{
+  display:none;
+  height:100vh;
+  padding:40px 20px;
+  box-sizing:border-box;
+  animation:fade 1.4s ease;
+}
+
+.screen.active{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+h1,h2{
+  font-family:'Playfair Display',serif;
+}
+
+.soft{
+  color:#ffd6e5;
+}
+
+.tapHint{
+  margin-top:30px;
+  font-size:14px;
+  opacity:.8;
+  color:#ffb3c6;
+}
+
+img{
+  width:260px;
+  border-radius:24px;
+  box-shadow:0 0 45px rgba(255,180,200,.7);
+  margin-top:25px;
+}
+
+@keyframes fade{
+  from{opacity:0; transform:scale(.96);}
+  to{opacity:1; transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3c8b3f7e0e.mp3" type="audio/mpeg">
+</audio>
+
+<!-- SCREEN 1 -->
+<div class="screen active" onclick="nextScreen()">
+  <h1>🎁</h1>
+  <h2>Something special for you</h2>
+  <p class="soft">Made with warmth… just for you</p>
+  <div class="tapHint">Tap to open ✨</div>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen" onclick="nextScreen()">
+  <h1>Hey Mary Jane 🤍</h1>
+  <p class="soft">
+    This little gift exists for one reason.<br>
+    You.
+  </p>
+  <div class="tapHint">Tap again 💫</div>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen" onclick="nextScreen()">
+  <h2 class="soft">You are truly special 🌸</h2>
+  <p>
+    You live far from home,<br>
+    yet your heart stays full of love.<br><br>
+
+    You work so hard.<br>
+    You carry so much.<br>
+    And still — you remain kind.
+  </p>
+  <img src="mary.jpg">
+  <div class="tapHint">Tap again 🤍</div>
+</div>
+
+<!-- SCREEN 4 -->
+<div class="screen" onclick="nextScreen()">
+  <h2>From me 💖</h2>
+  <p class="soft">
+    I adore you deeply.<br>
+    I admire your strength.<br>
+    I love your heart, your care,<br>
+    and the way you keep going.
+  </p>
+  <div class="tapHint">Tap again ✨</div>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen">
+  <h2 class="soft">Happy New Year 🎆</h2>
+  <p>
+    May this year be softer on you.<br>
+    Kinder to your heart.<br><br>
+
+    Please remember:<br>
+    You are doing beautifully.<br>
+    You are appreciated.<br>
+    You are never alone 🤍
+  </p>
+</div>
+
+<script>
+let current = 0;
+const screens = document.querySelectorAll('.screen');
+let musicStarted = false;
+
+function nextScreen(){
+  if(!musicStarted){
+    document.getElementById('music').play();
+    musicStarted = true;
+  }
+  screens[current].classList.remove('active');
+  current++;
+  if(current < screens.length){
+    screens[current].classList.add('active');
+  }
+}
+</script>
+
+</body>
+</html>
