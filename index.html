@@ -8,21 +8,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 body{
-  margin:0;
   font-family:'Poppins',sans-serif;
   background:radial-gradient(circle at top,#3a1c2f,#120810);
   color:#fff;
   text-align:center;
-  overflow:hidden;
 }
 
 .screen{
+  position:absolute;
+  inset:0;
   display:none;
-  height:100vh;
   padding:40px 20px;
   box-sizing:border-box;
-  animation:fade 1.4s ease;
+  animation:fade 1.2s ease;
 }
 
 .screen.active{
@@ -42,8 +48,8 @@ h1,h2{
 
 .tapHint{
   margin-top:30px;
-  font-size:14px;
-  opacity:.8;
+  font-size:15px;
+  opacity:.85;
   color:#ffb3c6;
 }
 
@@ -52,6 +58,12 @@ img{
   border-radius:24px;
   box-shadow:0 0 45px rgba(255,180,200,.7);
   margin-top:25px;
+}
+
+.tapLayer{
+  position:absolute;
+  inset:0;
+  z-index:10;
 }
 
 @keyframes fade{
@@ -63,35 +75,39 @@ img{
 
 <body>
 
-<audio id="music" loop preload="auto"></audio>
-
+<audio id="music" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3c8b3f7e0e.mp3" type="audio/mpeg">
+</audio>
 
 <!-- SCREEN 1 -->
-<div class="screen active" onclick="nextScreen()">
+<div class="screen active">
+  <div class="tapLayer"></div>
   <h1>🎁</h1>
   <h2>Something special for you</h2>
   <p class="soft">Made with warmth… just for you</p>
-  <div class="tapHint">Tap to open ✨</div>
+  <div class="tapHint">Tap anywhere ✨</div>
 </div>
 
 <!-- SCREEN 2 -->
-<div class="screen" onclick="nextScreen()">
+<div class="screen">
+  <div class="tapLayer"></div>
   <h1>Hey Mary Jane 🤍</h1>
   <p class="soft">
-    This little gift exists for one reason.<br>
+    This little gift exists<br>
+    for one reason.<br><br>
     You.
   </p>
   <div class="tapHint">Tap again 💫</div>
 </div>
 
 <!-- SCREEN 3 -->
-<div class="screen" onclick="nextScreen()">
+<div class="screen">
+  <div class="tapLayer"></div>
   <h2 class="soft">You are truly special 🌸</h2>
   <p>
     You live far from home,<br>
     yet your heart stays full of love.<br><br>
-
-    You work so hard.<br>
+    You work hard.<br>
     You carry so much.<br>
     And still — you remain kind.
   </p>
@@ -100,12 +116,13 @@ img{
 </div>
 
 <!-- SCREEN 4 -->
-<div class="screen" onclick="nextScreen()">
+<div class="screen">
+  <div class="tapLayer"></div>
   <h2>From me 💖</h2>
   <p class="soft">
     I adore you deeply.<br>
     I admire your strength.<br>
-    I love your heart, your care,<br>
+    I love your heart<br>
     and the way you keep going.
   </p>
   <div class="tapHint">Tap again ✨</div>
@@ -117,59 +134,37 @@ img{
   <p>
     May this year be softer on you.<br>
     Kinder to your heart.<br><br>
-
     Please remember:<br>
     You are doing beautifully.<br>
-    You are appreciated.<br>
     You are never alone 🤍
   </p>
 </div>
 
 <script>
-let current = 0;
 const screens = document.querySelectorAll('.screen');
-let musicStarted = false;
-
-<script>
-let current = 0;
-const screens = document.querySelectorAll('.screen');
-let musicStarted = false;
 const music = document.getElementById('music');
+let current = 0;
+let musicStarted = false;
 
-// load music properly (mobile-safe)
-music.src = "https://cdn.pixabay.com/download/audio/2022/03/15/audio_3c8b3f7e0e.mp3";
-music.load();
-
-function nextScreen(){
-  // start music on FIRST USER TAP
+function advance(){
   if(!musicStarted){
-    music.volume = 0.7;
-    const playPromise = music.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // iOS fallback — still needs same tap, but this prevents silent fail
-        document.body.addEventListener('touchstart', () => music.play(), { once: true });
-      });
-    }
+    music.volume = 0.6;
+    music.play().catch(()=>{});
     musicStarted = true;
   }
-
-  screens[current].classList.remove('active');
-  current++;
-  if(current < screens.length){
+  if(current < screens.length - 1){
+    screens[current].classList.remove('active');
+    current++;
     screens[current].classList.add('active');
   }
 }
-</script>
 
-  screens[current].classList.remove('active');
-  current++;
-  if(current < screens.length){
-    screens[current].classList.add('active');
-  }
-}
+// bind tap safely (mobile + desktop)
+document.querySelectorAll('.tapLayer').forEach(layer=>{
+  layer.addEventListener('click', advance);
+  layer.addEventListener('touchstart', advance);
+});
 </script>
 
 </body>
 </html>
-
